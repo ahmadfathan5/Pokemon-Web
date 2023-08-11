@@ -92,7 +92,11 @@ function displayPokemonData(pokemonData) {
     btn.textContent = "I Want This!!";
     footerTextCenter.appendChild(btn);
     btn.addEventListener("click", () => {
-        addToMyPokemon(pokemonData);
+        const newPokemonName = prompt("Masukkan nama pengganti untuk Pokemon ini:");
+        if (newPokemonName) {
+            const modifiedPokemonData = { ...pokemonData, name: newPokemonName };
+            addToMyPokemon(modifiedPokemonData);
+        }
     });
 
     cardFooter.appendChild(footerTextCenter);
