@@ -1,47 +1,13 @@
-//MEMANGGIL DATA POKEMON
-// Men-set url API dan jumlah data yang akan ditampilkan
-const apiUrl = "https://pokeapi.co/api/v2/pokemon/";
-const limit = 20; 
-let offset = 0;
-
-// memanggil data sesuai dengan limit yang diinginkan
-function fetchPokemons() {
-  fetch(`${apiUrl}?limit=${limit}&offset=${offset}`)
-    .then(response => response.json())
-    .then(data => {
-      const pokemons = data.results;
-      pokemons.forEach(pokemon => {
-        fetchPokemonDetails(pokemon.url);
-      });
-    })
-    .catch(error => {
-      console.error("Terjadi kesalahan:", error);
-    });
-}
-
-// memanggil data secara detail dari setiap pokemon
-function fetchPokemonDetails(url) {
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      const pokemonData = {
-        image: data.sprites.front_default,
-        name: data.name,
-        types: data.types.map(type => type.type.name),
-        height: data.height,
-        weight: data.weight
-      };
-      displayPokemonData(pokemonData);
-    })
-    .catch(error => {
-      console.error("Terjadi kesalahan:", error);
-    });
-}
-
-// membuat tampilan berdasarkan data yang diminta ke dalam HTML
-function displayPokemonData(pokemonData) {
-    const pokemonList = document.getElementById("pokemon-list");
+document.addEventListener("DOMContentLoaded", () => {
+    const myPokemonCollection = JSON.parse(localStorage.getItem("myPokemon")) || [];
+    const myPokemonList = document.getElementById("my-pokemon-list");
   
+    myPokemonCollection.forEach(pokemonData => {
+      displayMyPokemonData(pokemonData, myPokemonList);
+    });
+  });
+
+  function displayMyPokemonData(pokemonData, container) {
     const col = document.createElement("div");
     col.classList.add("col", "mb-5");
   
@@ -99,24 +65,5 @@ function displayPokemonData(pokemonData) {
     card.appendChild(cardFooter);
   
     col.appendChild(card);
-    pokemonList.appendChild(col);
-  }
-
-fetchPokemons();
-
-
-// MEMINDAHKAN DATA POKEMON
-
-function addToMyPokemon(pokemonData) {
-    const myPokemonCollection = JSON.parse(localStorage.getItem("myPokemon")) || [];
-  
-    // Pastikan Pokemon belum ada di koleksi sebelum ditambahkan
-    if (!myPokemonCollection.some(pokemon => pokemon.name === pokemonData.name)) {
-      myPokemonCollection.push(pokemonData);
-      localStorage.setItem("myPokemon", JSON.stringify(myPokemonCollection));
-  
-      console.log("Pokemon added to My Pokemon:", pokemonData);
-    } else {
-      console.log("Pokemon is already in My Pokemon:", pokemonData);
-    }
+    container.appendChild(col);
   }
