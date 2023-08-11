@@ -7,7 +7,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  function displayMyPokemonData(pokemonData, container) {
+  function removeFromMyPokemon(pokemonData) {
+    const myPokemonCollection = JSON.parse(localStorage.getItem("myPokemon")) || [];
+  
+    // Filter koleksi untuk menghilangkan data Pokemon yang dihapus
+    const updatedCollection = myPokemonCollection.filter(pokemon => pokemon.name !== pokemonData.name);
+  
+    localStorage.setItem("myPokemon", JSON.stringify(updatedCollection));
+  
+    console.log("Pokemon removed from My Pokemon:", pokemonData);
+  }
+
+function displayMyPokemonData(pokemonData, container) {
     const col = document.createElement("div");
     col.classList.add("col", "mb-5");
   
@@ -53,13 +64,15 @@ document.addEventListener("DOMContentLoaded", () => {
     footerTextCenter.classList.add("text-center");
   
     const btn = document.createElement("button");
-    btn.classList.add("btn", "btn-outline-dark", "mt-auto");
+    btn.classList.add("btn", "btn-outline-danger", "mt-auto");
     btn.href = "#";
-    btn.textContent = "I Want This!!";
+    btn.textContent = "Delete My Pokemon";
     footerTextCenter.appendChild(btn);
     btn.addEventListener("click", () => {
-        addToMyPokemon(pokemonData);
-      });
+        removeFromMyPokemon(pokemonData);
+        // Hapus elemen card dari tampilan setelah dihapus dari penyimpanan lokal
+        col.remove();
+    });
   
     cardFooter.appendChild(footerTextCenter);
     card.appendChild(cardFooter);
