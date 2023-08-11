@@ -1,7 +1,7 @@
 //MEMANGGIL DATA POKEMON
 // Men-set url API dan jumlah data yang akan ditampilkan
 const apiUrl = "https://pokeapi.co/api/v2/pokemon/";
-const limit = 20; 
+const limit = 300; 
 let offset = 0;
 
 // memanggil data sesuai dengan limit yang diinginkan
